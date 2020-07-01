@@ -1,0 +1,22 @@
+apply plugin: 'java-library'
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    // Gradle5.0之后的注解生成器配置
+    implementation 'com.google.auto.service:auto-service:1.0-rc6'
+    annotationProcessor 'com.google.auto.service:auto-service:1.0-rc6'
+    // Gradle5.0之前的注解生成器配置
+    // implementation 'com.google.auto.service:auto-service:1.0-rc3'
+
+    implementation 'com.squareup:javapoet:1.11.1'
+    implementation project(path: ':config')
+    implementation project(path: ':annotation')
+}
+
+sourceCompatibility = "8"
+targetCompatibility = "8"
+
+// 指定编码
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
