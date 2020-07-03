@@ -87,3 +87,12 @@ LayoutInjector 是一个用于Activity、Fragment和Dialog注入布局的注入�
 
 
 <br/>
+
+## 更新记录
+
+- 1.0 ：支持 `Activity`、`Fragment` 和 `Dialog` 的布局注入
+- 1.1 ：添加 `Layout` 布局名称扫描机制，完善逻辑
+
+
+
+<br/>
