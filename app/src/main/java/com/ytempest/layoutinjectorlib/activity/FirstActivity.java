@@ -8,7 +8,7 @@ import com.ytempest.layoutinjector.annotation.InjectLayout;
 import com.ytempest.layoutinjectorlib.R;
 
 
-@InjectLayout(R.layout.activity_first)
+@InjectLayout(android.R.layout.activity_list_item)
 public class FirstActivity extends AppCompatActivity {
 
     @Override
