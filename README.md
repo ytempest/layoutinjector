@@ -36,8 +36,8 @@ LayoutInjector 是一个用于Activity、Fragment和Dialog注入布局的注入�
 2. 在需要使用 LayoutInjector 的模块的 `build.gradle` 中添加以下依赖：
 
    ```
-   implementation 'com.github.ytempest.layoutinjector:layoutinject:1.0'
-   annotationProcessor 'com.github.ytempest.layoutinjector:compiler:1.0'
+   implementation 'com.github.ytempest.layoutinjector:layoutinject:1.1'
+   annotationProcessor 'com.github.ytempest.layoutinjector:compiler:1.1'
    ```
 
 
