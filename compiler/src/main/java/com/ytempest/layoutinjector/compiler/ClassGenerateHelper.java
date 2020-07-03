@@ -53,9 +53,8 @@ class ClassGenerateHelper {
                 .addCode("Class clazz = obj.getClass();\n")
                 .addCode("Integer layoutId = $L.get(clazz);\n", MAP_FIELD_NAME)
                 .addCode("if (layoutId == null || layoutId <= 0) {\n")
-                .addCode("    throw new IllegalStateException(\"" +
-                        "Please inject layout for \" + clazz.getCanonicalName() + \" by @" + InjectLayout.class.getSimpleName() +
-                        "\");\n")
+                .addCode("\tthrow new IllegalStateException(\"Please inject layout for \" + obj + \" by @$L\");\n",
+                        InjectLayout.class.getSimpleName())
                 .addCode("}\n")
                 .addCode("return layoutId;\n")
                 .build();
