@@ -6,8 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.ytempest.layoutinjector.config.Configuration;
-
 /**
  * @author ytempest
  * @since 2020/7/1
@@ -16,9 +14,10 @@ public final class LayoutInjector {
 
     static {
         try {
-            Class.forName(Configuration.PACKAGE_NAME + "." + Configuration.VIEW_ID_MAP_NAME);
-        } catch (ClassNotFoundException e) {
-            throw new IllegalStateException("Not found real map of layout id, please check your LayoutInjector configuration; see more: " + Configuration.FRAME_URL);
+            // 检查映射表是否存在
+            Class<LayoutMap> checkClass = LayoutMap.class;
+        } catch (Throwable e) {
+            throw new IllegalStateException("Not found real map of layout id, whether you have correct use the LayoutInjector");
         }
     }
 

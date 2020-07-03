@@ -7,10 +7,10 @@ import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeSpec;
 import com.ytempest.layoutinjector.annotation.InjectLayout;
-import com.ytempest.layoutinjector.config.Configuration;
 
 import java.io.IOException;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.annotation.processing.AbstractProcessor;
@@ -22,6 +22,12 @@ import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 
+import static com.ytempest.layoutinjector.compiler.Configuration.FRAME_URL;
+import static com.ytempest.layoutinjector.compiler.Configuration.INJECTOR_NAME;
+import static com.ytempest.layoutinjector.compiler.Configuration.LAYOUT_ID_MAP_CLASS_NAME;
+import static com.ytempest.layoutinjector.compiler.Configuration.MAP_FIELD_NAME;
+import static com.ytempest.layoutinjector.compiler.Configuration.PACKAGE_NAME;
+
 
 /**
  * @author ytempest
@@ -29,7 +35,6 @@ import javax.lang.model.element.TypeElement;
  */
 @AutoService(Processor.class)
 public class LayoutInjectorProcess extends AbstractProcessor {
-
 
     private Filer mFiler;
 
@@ -53,8 +58,9 @@ public class LayoutInjectorProcess extends AbstractProcessor {
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-        Set<? extends Element> injectLayoutElements = roundEnv.getElementsAnnotatedWith(InjectLayout.class);
-        if (injectLayoutElements == null || injectLayoutElements.isEmpty()) {
+        Set<? extends Element> destElementSet = roundEnv.getElementsAnnotatedWith(InjectLayout.class);
+        List<TypeElement> typeElementList = Utils.filterTypeElement(destElementSet);
+        if (typeElementList.isEmpty()) {
             return false;
         }
 
@@ -62,16 +68,17 @@ public class LayoutInjectorProcess extends AbstractProcessor {
         TypeSpec.Builder classBuilder = ClassGenerateHelper.createClassBuilder();
 
         // 添加类成员变量
-        FieldSpec mapField = ClassGenerateHelper.createMapField(injectLayoutElements.size());
+        FieldSpec mapField = ClassGenerateHelper.createMapField(typeElementList.size());
         classBuilder.addField(mapField);
 
         // 添加静态代码块
         CodeBlock.Builder staticBuilder = CodeBlock.builder();
-        for (Element layoutElement : injectLayoutElements) {
-            String layoutClassPath = layoutElement.toString();
-            InjectLayout injectLayout = layoutElement.getAnnotation(InjectLayout.class);
-            int id = injectLayout.value();
-            staticBuilder.add("$L.put($L.class, $L);\n", Configuration.MAP_NAME, layoutClassPath, id);
+        for (TypeElement typeElement : typeElementList) {
+            String typeClassPath = typeElement.getQualifiedName().toString();
+
+            InjectLayout injectLayout = typeElement.getAnnotation(InjectLayout.class);
+            int layoutId = injectLayout.value();
+            staticBuilder.add("$L.put($L.class, $L);\n", MAP_FIELD_NAME, typeClassPath, layoutId);
         }
         classBuilder.addStaticBlock(staticBuilder.build());
 
@@ -81,12 +88,12 @@ public class LayoutInjectorProcess extends AbstractProcessor {
 
         // 生成映射表
         try {
-            JavaFile.builder(Configuration.PACKAGE_NAME, classBuilder.build())
-                    .addFileComment("The class generate by LayoutInjector ($S)", Configuration.FRAME_URL)
+            JavaFile.builder(PACKAGE_NAME, classBuilder.build())
+                    .addFileComment("The class generate by $L ($L)", INJECTOR_NAME, FRAME_URL)
                     .build()
                     .writeTo(mFiler);
         } catch (IOException e) {
-            System.out.println("LayoutInjector fail to generate class");
+            System.err.println(String.format("%s fail to generate the class : %s", INJECTOR_NAME, LAYOUT_ID_MAP_CLASS_NAME));
             e.printStackTrace();
         }
         return false;

@@ -3,22 +3,31 @@ package com.ytempest.layoutinjector.compiler;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.MethodSpec;
+import com.squareup.javapoet.ParameterSpec;
 import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
-import com.ytempest.layoutinjector.config.Configuration;
+import com.ytempest.layoutinjector.annotation.InjectLayout;
 
 import java.util.HashMap;
 
 import javax.lang.model.element.Modifier;
+
+import static com.ytempest.layoutinjector.compiler.Configuration.LAYOUT_ID_MAP_CLASS_NAME;
+import static com.ytempest.layoutinjector.compiler.Configuration.MAP_FIELD_NAME;
+
 
 /**
  * @author ytempest
  * @since 2020/7/1
  */
 class ClassGenerateHelper {
+
+    private static final ClassName LayoutRes = ClassName.get("android.support.annotation", "LayoutRes");
+    private static final ClassName NonNull = ClassName.get("android.support.annotation", "NonNull");
+
     static TypeSpec.Builder createClassBuilder() {
-        return TypeSpec.classBuilder(Configuration.VIEW_ID_MAP_NAME)
+        return TypeSpec.classBuilder(LAYOUT_ID_MAP_CLASS_NAME)
                 .addModifiers(Modifier.PUBLIC, Modifier.FINAL);
     }
 
@@ -28,24 +37,27 @@ class ClassGenerateHelper {
         ClassName mapValue = ClassName.get(Integer.class);
         // 为HashMap添加泛型
         TypeName fieldType = ParameterizedTypeName.get(hashMap, mapKey, mapValue);
-        return FieldSpec.builder(fieldType, Configuration.MAP_NAME)
+        return FieldSpec.builder(fieldType, MAP_FIELD_NAME)
                 .addModifiers(Modifier.PRIVATE, Modifier.STATIC, Modifier.FINAL)
-                .initializer("new HashMap<>($L)", mapSize)
+                .initializer("new $L<>($L)", hashMap.simpleName(), mapSize)
                 .build();
     }
 
     static MethodSpec createGetMethod() {
         return MethodSpec.methodBuilder("get")
-                .addAnnotation(ClassName.get("android.support.annotation", "LayoutRes"))
+                .addAnnotation(LayoutRes)
                 .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
                 .returns(ClassName.INT)
-                .addParameter(ClassName.get(Object.class), "obj")
+                .addParameter(ParameterSpec.builder(ClassName.get(Object.class), "obj")
+                        .addAnnotation(NonNull).build())
                 .addCode("Class clazz = obj.getClass();\n")
-                .addCode("Integer id = $L.get(clazz);\n", Configuration.MAP_NAME)
-                .addCode("if (id == null || id <= 0) {\n")
-                .addCode("    throw new IllegalStateException(\"No found layout id by \" + clazz.getCanonicalName());\n")
+                .addCode("Integer layoutId = $L.get(clazz);\n", MAP_FIELD_NAME)
+                .addCode("if (layoutId == null || layoutId <= 0) {\n")
+                .addCode("    throw new IllegalStateException(\"" +
+                        "Please inject layout for \" + clazz.getCanonicalName() + \" by @" + InjectLayout.class.getSimpleName() +
+                        "\");\n")
                 .addCode("}\n")
-                .addCode("return id;\n")
+                .addCode("return layoutId;\n")
                 .build();
     }
 }

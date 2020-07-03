@@ -1,2 +1,2 @@
 rootProject.name='layoutinjector'
-include ':app', ':layout_map_dependence', ':config', ':annotation', ':layoutinject', ':compiler'
+include ':app', ':layout_map_dependence', ':annotation', ':layoutinject', ':compiler'
