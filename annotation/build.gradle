@@ -4,7 +4,7 @@ group = rootProject.respBaseUrl
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    compileOnly 'com.android.support:support-annotations:28.0.0'
+    compileOnly deps.android.support_annotation
 }
 
 sourceCompatibility = "8"

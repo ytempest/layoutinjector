@@ -6,13 +6,9 @@ group = rootProject.respBaseUrl
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    // Gradle5.0之后的注解生成器配置
-    implementation 'com.google.auto.service:auto-service:1.0-rc6'
-    annotationProcessor 'com.google.auto.service:auto-service:1.0-rc6'
-    // Gradle5.0之前的注解生成器配置
-    // implementation 'com.google.auto.service:auto-service:1.0-rc3'
+    implementation deps.auto_service
 
-    implementation 'com.squareup:javapoet:1.11.1'
+    implementation deps.javapoet
     implementation project(path: ':annotation')
 
     // 用于扫描Layout
