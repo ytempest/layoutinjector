@@ -1,4 +1,5 @@
 apply plugin: 'java-library'
+apply from: rootProject.file('bintray/bintray-upload.gradle')
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
