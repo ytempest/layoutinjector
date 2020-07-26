@@ -1,2 +1,6 @@
-rootProject.name='layoutinjector'
-include ':sample', ':layout_map_dependence', ':annotation', ':layoutinject', ':compiler'
+rootProject.name = 'layoutinjector-parent'
+include ':layoutinjector'
+include ':layoutinjector-annotation'
+include ':layoutinjector-compiler'
+include ':layoutinjector-layout-dependence'
+include ':sample'

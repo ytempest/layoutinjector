@@ -24,10 +24,10 @@ android {
 
 dependencies {
     compileOnly deps.android.support_v4
-    api project(path: ':annotation')
+    api project(path: ':layoutinjector-annotation')
 
     // 这个jar包只是用来处理ContentViewMap的打包依赖
-    compileOnly project(path: ':layout_map_dependence')
+    compileOnly project(path: ':layoutinjector-layout-dependence')
 }
 
 // 指定编码

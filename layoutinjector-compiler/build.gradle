@@ -9,7 +9,7 @@ dependencies {
     implementation deps.auto_service
 
     implementation deps.javapoet
-    implementation project(path: ':annotation')
+    implementation project(path: ':layoutinjector-annotation')
 
     // 用于扫描Layout
     compileOnly files(Jvm.current().toolsJar)

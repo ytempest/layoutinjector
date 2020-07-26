@@ -39,6 +39,6 @@ dependencies {
     implementation deps.android.support_v4
     implementation deps.android.appcompat_v7
 
-    implementation project(path: ':layoutinject')
-    annotationProcessor project(path: ':compiler')
+    implementation project(path: ':layoutinjector')
+    annotationProcessor project(path: ':layoutinjector-compiler')
 }
