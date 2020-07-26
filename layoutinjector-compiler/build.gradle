@@ -1,8 +1,6 @@
 import org.gradle.internal.jvm.Jvm
 
 apply plugin: 'java-library'
-apply plugin: 'com.github.dcendents.android-maven'
-group = rootProject.respBaseUrl
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
