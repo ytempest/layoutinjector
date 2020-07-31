@@ -95,6 +95,15 @@ bintray {
 
 // afterEvaluate表示所有的模块都已经配置完了，可以准备执行task
 afterEvaluate { project ->
+    // 修正打包JavaDoc时出现的GBK不可映射编码问题
+    tasks.withType(Javadoc) {
+        options {
+            encoding "UTF-8"
+            charSet 'UTF-8'
+            links "http://docs.oracle.com/javase/7/docs/api"
+        }
+    }
+
     // 打包项目的JavaDoc文档和源码的Jar
     if (project.getPlugins().hasPlugin('com.android.application') ||
             project.getPlugins().hasPlugin('com.android.library')) {//打包Android Library库文档和源码
@@ -122,6 +131,19 @@ afterEvaluate { project ->
         task javadocJar(type: Jar, dependsOn: javadoc) {
             classifier = 'javadoc'
             from javadoc.destinationDir
+        }
+    }
+
+
+    // 指定上传源码和JavaDoc的jar文件
+    artifacts {
+        if (project.getPlugins().hasPlugin('com.android.application') ||
+                project.getPlugins().hasPlugin('com.android.library')) {
+            archives androidSourcesJar
+            archives androidJavadocsJar
+        } else {
+            archives sourcesJar
+            archives javadocJar
         }
     }
 }
