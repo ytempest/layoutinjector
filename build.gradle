@@ -24,6 +24,10 @@ allprojects {
         google()
         jcenter()
     }
+    // 指定编码
+    tasks.withType(JavaCompile) {
+        options.encoding = "UTF-8"
+    }
 }
 
 task clean(type: Delete) {
