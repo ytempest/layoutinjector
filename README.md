@@ -20,25 +20,13 @@ LayoutInjector 是一个用于Activity、Fragment和Dialog注入布局的注入�
 
 #### 一、配置
 
-1. 在项目的根目录 `build.gradle` 下添加 jitpack 的路径：
+1. 在需要使用 LayoutInjector 的模块的 `build.gradle` 中添加以下依赖：
 
    ```
-   allprojects {
-       repositories {
-           ...
-           maven { url 'https://jitpack.io' }
-       }
-   }
+   implementation 'com.ytempest:layoutinjector:1.0'
+   annotationProcessor 'com.ytempest:layoutinjector-compiler:1.0'
    ```
-
    
-
-2. 在需要使用 LayoutInjector 的模块的 `build.gradle` 中添加以下依赖：
-
-   ```
-   implementation 'com.github.ytempest.layoutinjector:layoutinject:1.1'
-   annotationProcessor 'com.github.ytempest.layoutinjector:compiler:1.1'
-   ```
 
 
 
@@ -84,14 +72,30 @@ LayoutInjector 是一个用于Activity、Fragment和Dialog注入布局的注入�
    }
    ```
 
+4. 在其他类中使用
 
+   ```
+   @InjectLayout(R.layout.layout_view_option)
+   public class AbsViewOption {
+   
+       public void onStart() {
+           int layoutId = LayoutInjector.getLayoutId(this);
+           // TODO layoutId
+       }
+   }
+   ```
+
+   
+
+   
 
 <br/>
 
 ## 更新记录
 
-- 1.0 ：支持 `Activity`、`Fragment` 和 `Dialog` 的布局注入
-- 1.1 ：添加 `Layout` 布局名称扫描机制，完善逻辑
+- 1.0 ：支持 `Activity`、`Fragment` 和 `Dialog` 的布局注入，添加 `Layout` 布局名称扫描机制
+
+  
 
 
 
