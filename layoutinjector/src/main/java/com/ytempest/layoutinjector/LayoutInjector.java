@@ -17,7 +17,7 @@ public final class LayoutInjector {
             // 检查映射表是否存在
             Class<LayoutMap> checkClass = LayoutMap.class;
         } catch (Throwable e) {
-            throw new IllegalStateException("Not found real map of layout id, whether you have correct use the LayoutInjector");
+            throw new IllegalStateException("Not found real map of layout id, whether you have use the LayoutInjector correctly");
         }
     }
 

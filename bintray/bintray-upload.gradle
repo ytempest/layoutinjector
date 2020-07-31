@@ -81,10 +81,10 @@ bintray {
         // 发布到Bintray上的项目名字，即在Bintray个人仓库中显示的名称
         name = projectConfigs["POM_NAME"]
         websiteUrl = coreConfigs["SITE_URL"]
-        vcsUrl = coreConfigs["GITHUB_URL"]
+        vcsUrl = coreConfigs["VCS_URL"]
         // 是否是公开项目
         publish = Boolean.valueOf(coreConfigs["BINTRAY_PUBLISH"])
-        // 发布项目的证书数组，可以指定多个证书
+        // 发布项目的证书数组，可以指定多个证书，如果是第一次发布要加上这个才会在Bintray自动创建项目
         licenses = [coreConfigs["BINTRAY_LICENSES"]]
         version {
             version coreConfigs["VERSION"]
@@ -150,7 +150,7 @@ def getBintrayUserConfigs() {
     def filePath = "bintray/user.properties"
     def file = rootProject.file(filePath)
     if (!file.exists()) {
-        throw new IllegalAccessException("Please setting [user, apiKey] that from jfrog bintray in " + file.path)
+        throw new IllegalAccessException("Please setting [USER, APIKEY] that from jfrog bintray in " + file.path)
     }
     Properties configs = new Properties()
     configs.load(file.newDataInputStream())
