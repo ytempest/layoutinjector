@@ -43,10 +43,9 @@ buildscript {
 
     ext.deps = [
             android       : [
-                    "support_v4"        : "com.android.support:support-v4:${versions.supoortLib}",
-                    "appcompat_v7"      : "com.android.support:appcompat-v7:$versions.supoortLib",
-                    "support_annotation": "com.android.support:support-annotations:$versions.supoortLib",
-                    "constraint"        : "com.android.support.constraint:constraint-layout:1.1.3",
+                    "support_v4"  : "com.android.support:support-v4:${versions.supoortLib}",
+                    "appcompat_v7": "com.android.support:appcompat-v7:$versions.supoortLib",
+                    "constraint"  : "com.android.support.constraint:constraint-layout:1.1.3",
             ],
 
             "auto_service": "com.google.auto.service:auto-service:1.0-rc6",

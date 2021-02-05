@@ -23,9 +23,6 @@ import static com.ytempest.layoutinjector.compiler.Configuration.MAP_FIELD_NAME;
  */
 class ClassGenerateHelper {
 
-    private static final ClassName LayoutRes = ClassName.get("android.support.annotation", "LayoutRes");
-    private static final ClassName NonNull = ClassName.get("android.support.annotation", "NonNull");
-
     static TypeSpec.Builder createClassBuilder() {
         return TypeSpec.classBuilder(LAYOUT_ID_MAP_CLASS_NAME)
                 .addModifiers(Modifier.PUBLIC, Modifier.FINAL);
@@ -45,11 +42,9 @@ class ClassGenerateHelper {
 
     static MethodSpec createGetMethod() {
         return MethodSpec.methodBuilder("get")
-                .addAnnotation(LayoutRes)
                 .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
                 .returns(ClassName.INT)
-                .addParameter(ParameterSpec.builder(ClassName.get(Object.class), "obj")
-                        .addAnnotation(NonNull).build())
+                .addParameter(ParameterSpec.builder(ClassName.get(Object.class), "obj").build())
                 .addCode("Class clazz = obj.getClass();\n")
                 .addCode("Integer layoutId = $L.get(clazz);\n", MAP_FIELD_NAME)
                 .addCode("if (layoutId == null || layoutId <= 0) {\n")
